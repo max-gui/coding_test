@@ -13,14 +13,7 @@
                       (iterate fib-pair-value [1 1 1])))
          0)))
 
-(defn sieve
-  [[p & rst]]
-  ;; make sure the stack size is sufficiently large!
-  (lazy-seq (cons p (sieve (remove #(= 0 (mod % p)) rst)))))
-
-(def primes (sieve (iterate inc 2)))
-
-(defn lazy-primes3 []
+(def primes
   (letfn [(enqueue [sieve n step]
             (let [m (+ n step)]
               (if (sieve m)
@@ -41,56 +34,5 @@
     (cons 2 (lazy-seq (next-primes {} 3)))))
 
 (defn sum-factors [n]
-  (reduce + (take-while #(< % n) (lazy-primes3) )))
+  (reduce + (take-while #(< % n) primes )))
                 
- (defn non-trivial-sqrt? [n m]
-   (cond (= n 1) false 
-         (= n (- m 1)) false
-         ; book reads: whose square is equal to 1 modulo n 
-         ; however, what was meant is square is congruent 1 modulo n 
-         :else (= (rem (math/sqrt n) m) 1))) 
-
- (defn expmod [base exp m]
-   (cond ((= exp 0) 1) 
-         ((even? exp) 
-          (let [x (expmod base (/ exp 2) m)]
-            (if (non-trivial-sqrt? x m) 0 (rem (math/sqrt x) m))) 
-          :else 
-             (rem (* base (expmod base (- exp 1) m)) 
-                        m)))) 
-  
-(defn miller-rabin-test [a n] 
-   (cond (= a 0) true
-         ; expmod is congruent to 1 modulo n 
-         (= (expmod a (- n 1) n) 1) (miller-rabin-test (- a 1) n)
-         :else false)) 
-  
-
-(defn miller-rabin [n]
-   (miller-rabin-test (- n 1) n)) 
-  
-(defn mill-rabin-expmod [base exp m]
-  "base^exp mod m adapted for use in the Miller-Rabin test"
-  (cond (= exp 0) 1
-        (even? exp) (let [itr (mill-rabin-expmod base (/ exp 2) m)
-                          sqr (math/expt itr 2)]
-                      (if (and (not= itr 1)
-                               (not= itr (dec m))
-                               (= sqr (mod 1 m)))
-                        0
-                        (mod sqr m)))
-        :else (mod (* base (mill-rabin-expmod base (dec exp) m))
-                   m)))
-
-(defn mr-fermat-test [n]
-  (let [rand (int (inc (rand (dec n))))]
-    (= (mill-rabin-expmod rand (dec n) n) (mod 1 n))))
-
-(defn mr-fast-prime? [n times]
-  (every? mr-fermat-test
-          (take times (repeat n))))
-
-(def primes-new (filter mr-fermat-test (iterate inc 2)))
-
-(defn sum-factors-new [n]
-  (reduce + (take-while #(< % n) primes-new )))
