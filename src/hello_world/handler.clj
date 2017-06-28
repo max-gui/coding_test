@@ -16,19 +16,10 @@
 (defn sieve
   [[p & rst]]
   ;; make sure the stack size is sufficiently large!
-  (lazy-seq (cons p (sieve (filter #(= 0 (mod % p)) rst)))))
-
+  (lazy-seq (cons p (sieve (remove #(= 0 (mod % p)) rst)))))
 
 (def primes (sieve (iterate inc 2)))
 
-(defn sum-factors [n]
-  (reduce + (filter #(< % n) primes )))
-
-(defn sum-factors-new [n]
-  (reduce + (take-while #(< % n) primes-new )))
-
-
-                   
 (defn lazy-primes3 []
   (letfn [(enqueue [sieve n step]
             (let [m (+ n step)]
@@ -49,6 +40,9 @@
                             (+ candidate 2))))))]
     (cons 2 (lazy-seq (next-primes {} 3)))))
 
+(defn sum-factors [n]
+  (reduce + (take-while #(< % n) (lazy-primes3) )))
+                
  (defn non-trivial-sqrt? [n m]
    (cond (= n 1) false 
          (= n (- m 1)) false
@@ -97,3 +91,6 @@
           (take times (repeat n))))
 
 (def primes-new (filter mr-fermat-test (iterate inc 2)))
+
+(defn sum-factors-new [n]
+  (reduce + (take-while #(< % n) primes-new )))
