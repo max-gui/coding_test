@@ -1,19 +1,36 @@
-# coding_test
+# coding
 
-FIXME
+FIXME: description
 
-## Prerequisites
+## Installation
 
-You will need [Leiningen][] 2.0.0 or above installed.
+Download from http://example.com/FIXME.
 
-[leiningen]: https://github.com/technomancy/leiningen
+## Usage
 
-## Running
+FIXME: explanation
 
-To start a web server for the application, run:
+    $ java -jar coding-0.1.0-standalone.jar [args]
 
-    lein ring server
+## Options
+
+FIXME: listing of options this app accepts.
+
+## Examples
+
+...
+
+### Bugs
+
+...
+
+### Any Other Sections
+### That You Think
+### Might be Useful
 
 ## License
 
-Copyright © 2016 FIXME
+Copyright © 2017 FIXME
+
+Distributed under the Eclipse Public License either version 1.0 or (at
+your option) any later version.
