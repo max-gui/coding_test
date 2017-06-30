@@ -79,5 +79,5 @@
 (defn -main
   "This should be pretty simple."
   []
-  (println "the index of the first term in the Fibonacci sequence to contain 1000 digits is" (fib-index 1000))
+  (println "the index of the first term in the Fibonacci sequence to contain 1000 digits is" (fib-index-math 1000))
   (println "the sum of all prime numbers below 2,000,000 is " (sum-factors 2000000)))
