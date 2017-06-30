@@ -2,6 +2,33 @@
   (:require [clojure.math.numeric-tower :as math])
   (:gen-class))
 
+(defn fib-iter [a b p q count]
+  (cond
+    (= count 0) b
+    (even? count)    (recur a
+                            b
+                            (+ (* p p) (* q q))
+                            (+ (* 2 p q) (* q q))
+                            (/ count 2N))
+    :else (recur (+ (* b q) (* a q) (* a p))
+                  (+ (* b p) (* a q))
+                  p
+                  q
+                  (- count 1N))))
+                
+(defn fib [n]
+  (fib-iter 1N 0N 0N 1N n))
+
+(defn fib-help [index, len]
+  (if (> (count (str (fib index)))
+         (dec len))
+    index
+    (recur (inc index) len)))
+
+(defn fib-index-math [len]
+  (fib-help 1 len))
+         
+
 (defn fib-pair-value [[a b c]]
   [b (+' a b) (inc c)])
 
