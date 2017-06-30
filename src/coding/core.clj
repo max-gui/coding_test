@@ -33,13 +33,12 @@
   [b (+' a b) (inc c)])
 
 (defn fib-index [len]
-  (last (nth
-         (filter (fn [[v i]]
-                   (> (count (str v))
-                      (dec len)))
-                 (map (fn [[a b c]] [a c])
-                      (iterate fib-pair-value [1 1 1])))
-         0)))
+  (inc
+   (last (last
+          (take-while (fn [[v _ _]]
+                        (< (count (str v))
+                           len))
+                      (iterate fib-pair-value [1 1 1]))))))
 
 (def primes
   (letfn [(enqueue [sieve n step]
