@@ -21,16 +21,20 @@
 
 (defn fib-help [pre_index, index, len]
   ;;(print pre_index index len "\r\n")
-  (if (> (count (str (fib index)))
-         (dec len)) (if (or (= index pre_index) (= index (inc pre_index))) index
-                       (recur pre_index
-                              (quot (+ pre_index
-                                       index)
-                                    2)
-                              len))
-      (recur index
-             (+ index index)
-             len)))
+  (let [index-flag (or (= index pre_index)
+                       (= index (inc pre_index)))
+        len-flag (< (count (str (fib index)))
+                    len)]
+    (if len-flag (recur index
+                        (+ index index)
+                        len)
+        (if index-flag index
+            (recur pre_index
+                   (quot (+ pre_index
+                            index)
+                         2)
+                   len)))))
+
         
 (defn fib-index-math [len]
   (fib-help 1 1 len))
