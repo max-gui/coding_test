@@ -19,27 +19,22 @@
 (defn fib [n]
   (fib-iter 1N 0N 0N 1N n))
 
-(defn fib-help [pre_index, index, len]
-  ;;(print pre_index index len "\r\n")
-  (let [index-flag (or (= index pre_index)
-                       (= index (inc pre_index)))
-        len-flag (< (count (str (fib index)))
-                    len)]
-    (if len-flag (recur index
-                        (+ index index)
-                        len)
-        (if index-flag index
-            (recur pre_index
-                   (quot (+ pre_index
-                            index)
-                         2)
-                   len)))))
-
-        
 (defn fib-index-math [len]
-  (fib-help 1 1 len))
-         
-
+  (cond (= len 1) 1
+        (< len 1) 0
+        :else ((fn [pre_index, index, len]
+                 (let [current-len (count (str (fib index)))
+                       hit (= (- index pre_index)
+                              1)]
+                   (cond (and (= current-len len)
+                              hit) index
+                         (< current-len len) (recur index (+ index index) len)
+                         :else (recur pre_index
+                                      (quot (+ pre_index index)
+                                            2)
+                                      len))))
+               2, 4, len)))
+      
 (defn fib-pair-value [[a b c]]
   [b (+' a b) (inc c)])
 
